@@ -63,8 +63,8 @@ void print_char(char character , int col , int row , char attribute_byte ) {
 		offset = get_screen_offset(79,rows)+8;
 
 	} else {
-		vidmem[offset] = character;
-		vidmem[offset+1] = attribute_byte;
+		vidmem[offset+3] = character;
+		vidmem[offset+4] = attribute_byte;
 	}
 
 	offset += 2;
@@ -78,7 +78,7 @@ void clear_screen() {
 	int col = 0;
 	for(row=0;row<MAX_ROWS; row++){
 		for(col=0;col<MAX_COLS; col++){
-			print_char(' ', col, row, WHITE_ON_BLACK);
+			print_char('l', col, row, WHITE_ON_BLACK);
 		}
 	}
 	print_line_nums();

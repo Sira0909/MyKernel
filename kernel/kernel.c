@@ -21,9 +21,9 @@ int main() {
 	int col = 3;
 	int row = 6;
 	
-	clear_screen();	
-	//print_char('H', 3, 4, WHITE_ON_BLACK);
+	//clear_screen();	
+	print_char('H', 1, 1, WHITE_ON_BLACK);
 
-	print_at(message, -1, -1); 
+//	print_at(message, -1, -1); 
 	return 1;
 }

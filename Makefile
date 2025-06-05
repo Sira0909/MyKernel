@@ -8,13 +8,13 @@ os-image: boot/boot.bin kernel.bin kernel/kernel_padding.bin
 	cat $^ > os-image
 
 kernel.bin: kernel/kernel_entry.o ${OBJ} 
-	ld -o kernel.bin -Ttext 0x1000  $^  -m elf_i386 -e 0 
+	ld -o kernel.bin -Ttext 0x1000  $^  -m elf_x86_64 -e 0 
 
 %.o : %.c 
-	"$$HOME/opt/cross/bin/i386-elf-gcc" -ffreestanding  -c $< -o $@ -O0
+	"$$HOME/opt/cross/bin/x86_64-elf-gcc" -mno-red-zone -ffreestanding  -c $< -o $@ -O0 -mno-mmx -mno-sse -mno-sse2 
 
 %.o : %.asm
-	nasm $< -f elf -o $@
+	nasm $< -f elf64 -o $@
 
 
 %.bin : %.asm
