@@ -12,6 +12,7 @@ switch_to_pm:
 	mov cr0, eax	; update cr0
 
 	jmp CODE_SEG:init_pm
+	dw 0x0
 
 [bits 32]
 

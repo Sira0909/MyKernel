@@ -1,5 +1,5 @@
-#include "../drivers/screen.c"
-void __stack_chk_fail_local(void){
+#include "../drivers/screen.h"
+void __stack_chk_fail(void){
 	print_char('#',0,0,WHITE_ON_BLACK);
 	while(1){}
 }
@@ -10,22 +10,20 @@ int main() {
 	// at address pointed to by video_memory, store the character 'X'
 //	*video_memory = 'X';
 	
-
 	//clear_screen();
-	char a = 'a';
-	char b = 'b';
-	char c = 'c';
-	char d = 'd';
-	char message[] = "Hi Kernel";
-	char message2[] = "ths";
+	//while(1){}
+
+	char *message = "Hi! This is my Kernel so far. Is quite barebones. \n\n\n\nI can do newlines";
+
 	//char message3[] = "Hi Kernel3";
 	//char e = 'f';
 	//char g = 'H';
 	int col = 3;
 	int row = 6;
-
+	
 	clear_screen();	
+	//print_char('H', 3, 4, WHITE_ON_BLACK);
 
-	print_at(message, 0, 0); 
+	print_at(message, -1, -1); 
 	return 1;
 }

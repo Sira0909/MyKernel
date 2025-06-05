@@ -8,7 +8,7 @@ disk_load:
 	mov al, dh	; Read DH sectors
 	mov ch, 0x00	; Select cylinder 0
 	mov dh, 0x00	; select head 0
-	mov cl, 0x02	; Start reading from second sector, ie
+	mov cl, 0x0a	; Start reading from second sector, ie
 			; after boot sector)
 
 	int 0x13	;now issue the BIOS interrupt to do the actual read

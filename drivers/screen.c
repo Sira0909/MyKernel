@@ -1,12 +1,5 @@
-#include "port_bytes.c"
-#define VIDEO_ADDRESS 0xb8000
-#define MAX_ROWS 25
-#define MAX_COLS 80
-// Attribute byte for our default colour scheme .
-#define WHITE_ON_BLACK 0x0f
-// Screen device I / O ports
-#define REG_SCREEN_CTRL 0x3D4
-#define REG_SCREEN_DATA 0x3D5
+#include "port_bytes.h"
+#include "screen.h"
 
 int get_screen_offset(int col, int row){
 	return ((row*MAX_COLS + col)*2);
@@ -67,7 +60,7 @@ void print_char(char character , int col , int row , char attribute_byte ) {
 
 	if (character == '\n'){
 		int rows = offset / (2*MAX_COLS);
-		offset = get_screen_offset(79,rows);
+		offset = get_screen_offset(79,rows)+8;
 
 	} else {
 		vidmem[offset] = character;
@@ -88,8 +81,9 @@ void clear_screen() {
 			print_char(' ', col, row, WHITE_ON_BLACK);
 		}
 	}
+	print_line_nums();
+	set_cursor(get_screen_offset(4,0));
 
-	set_cursor(get_screen_offset(0,0));
 }
 void print_at(char* message, int col, int row){
 	if (col>= 0 && row >=0) {
@@ -103,4 +97,36 @@ void print_at(char* message, int col, int row){
 }
 void print(char* message){
 	print_at(message, -1, -1);
+}
+
+//void println(char* message){
+//	print_at(message, -1, -1);
+//	print_char('\n', -1, -1, WHITE_ON_BLACK);
+//}
+
+void prInt_at_include_zeros(int num, int col, int row, int includeZeros){
+	if (col>= 0 && row >=0) {
+		set_cursor(get_screen_offset(col,row));
+	}
+	int i = 0;
+	char number[8] = {'\0'};
+	while(num>0){
+		number[i] = '0'+num%10;
+		num /=10;
+		i++;
+	}
+	while(i<includeZeros){
+		number[i] = '0';
+		i++;
+	}
+	while(i>=0){
+		print_char(number[i],-1, -1, WHITE_ON_BLACK);
+		i--;
+	}
+}
+
+void print_line_nums(){
+	for(int row=0;row<MAX_ROWS; row++){
+		prInt_at_include_zeros(row, 0, row, 2);
+	}
 }

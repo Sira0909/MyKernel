@@ -1,3 +1,5 @@
+#include "port_bytes.h"
+
 void memory_copy(char* source, char* dest, int no_bytes){
 	int i;
 	for(i = 0; i<no_bytes; i++){
@@ -23,3 +25,4 @@ unsigned short port_word_in ( unsigned short port ) {
 void port_word_out ( unsigned short port , unsigned short data ) {
 	__asm__( "out %%ax , %%dx " : : "a" ( data ) , "d" ( port ));
 }
+

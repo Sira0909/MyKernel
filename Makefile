@@ -1,20 +1,20 @@
-all: os-image.bin
+all: os-image
 
 C_SOURCES= ${wildcard kernel/*.c drivers/*.c}
-HEADERS = ${wildcard kernel/*.h drivers/*.c}
+HEADERS = ${wildcard kernel/*.h drivers/*.h}
 
 OBJ = ${C_SOURCES:.c=.o}
-os-image.bin: boot/boot.bin kernel.bin 
-	cat $^ > os-image.bin
+os-image: boot/boot.bin kernel.bin kernel/kernel_padding.bin
+	cat $^ > os-image
 
-kernel.bin: kernel/kernel_entry.o ${OBJ} kernel/kernel_padding.o
-	ld -o kernel.bin -Ttext 0x1001 kernel/kernel_entry.o kernel/kernel.o  -m elf_i386
+kernel.bin: kernel/kernel_entry.o ${OBJ} 
+	ld -o kernel.bin -Ttext 0x1000  $^  -m elf_i386 -e 0 
 
-%.o : %.c ${HEADERS}
-	gcc -m32 -ffreestanding -c $< -o $@ 
+%.o : %.c 
+	"$$HOME/opt/cross/bin/i386-elf-gcc" -ffreestanding  -c $< -o $@ -O0
 
 %.o : %.asm
-	nasm $< -f elf32 -o $@
+	nasm $< -f elf -o $@
 
 
 %.bin : %.asm
@@ -22,7 +22,7 @@ kernel.bin: kernel/kernel_entry.o ${OBJ} kernel/kernel_padding.o
 
 cleanfull:
 	rm  kernel/*.o boot/*.bin drivers/*.o
-	rm  *.bin *.o os-image
+	rm  *.bin *.o os-image logfile.txt
 clean:
 	rm  kernel/*.o boot/*.bin drivers/*.o
 	rm  *.bin *.o 

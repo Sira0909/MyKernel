@@ -27,7 +27,7 @@ load_kernel:
 	call printstring
 
 	mov bx, KERNEL_OFFSET
-	mov dh, 15
+	mov dh, 50
 	mov dl, [BOOT_DRIVE]
 	call disk_load
 
@@ -40,8 +40,7 @@ BEGIN_PM:
 	mov ebx, MSG_PROT_MODE
 	call print_string_pm	;use our 32-bit print routine.
 
-	call 0x1210
-
+	call KERNEL_OFFSET 
 	jmp $			;Hang
 
 BOOT_DRIVE db 0
